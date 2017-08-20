@@ -1,0 +1,22 @@
+{
+    "name": "makbari/fanap-oauth-client",
+    "description": "Fanap company oauth client sdk",
+    "type": "library",
+    "require": {
+        "php": ">=7.0",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Majid Akbari",
+            "email": "majidakbariiii@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "makbari\\fanapOauthClient\\": "src/"
+        }
+    }
+}
