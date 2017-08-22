@@ -1,5 +1,5 @@
 <?php
-namespace fanap\fanapOauthClient;
+namespace makbari\fanapOauthClient;
 
 use makbari\fanapOauthClient\entity\Token;
 use makbari\fanapOauthClient\interfaces\handler\iHandler;
