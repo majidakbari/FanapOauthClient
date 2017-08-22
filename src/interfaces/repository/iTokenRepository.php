@@ -1,6 +1,7 @@
 <?php
 namespace makbari\fanapOauthClient\interfaces\repository;
 
+use makbari\fanapOauthClient\exceptions\ModelNotFoundException;
 use makbari\fanapOauthClient\interfaces\entity\iToken;
 
 /**
@@ -11,9 +12,15 @@ interface iTokenRepository
 {
 
     /**
-     * @param string $refresh_token
+     * @param string $token
      * @return iToken
      */
-    function findByRefreshToken($refresh_token) :iToken;
+    function findByToken($token) :iToken;
+
+    /**
+     * @param iToken $token
+     * @return iToken
+     */
+    function updateToken(iToken $token) :iToken;
 
 }

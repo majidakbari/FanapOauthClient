@@ -2,6 +2,7 @@
 namespace makbari\fanapOauthClient\interfaces;
 
 use makbari\fanapOauthClient\entity\Token;
+use makbari\fanapOauthClient\interfaces\entity\iToken;
 
 /**
  * Interface iClient
@@ -19,7 +20,7 @@ interface iOAuthClient
      * @param string $refreshToken
      * @return mixed
      */
-    function getTokenByRefreshToken(string $refreshToken) :array;
+    function getTokenByRefreshToken(string $refreshToken) :iToken;
 
     /**
      * @param string $code
@@ -27,7 +28,7 @@ interface iOAuthClient
      * @param string $clientSecret
      * @param string $grantType
      * @param string $redirectUri
-     * @return Token
+     * @return iToken
      */
-    function getTokenByCode(string $code, string $clientId, string $clientSecret, string $grantType, string $redirectUri) :Token ;
+    function getTokenByCode(string $code, string $clientId, string $clientSecret, string $grantType, string $redirectUri) :iToken ;
 }

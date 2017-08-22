@@ -3,6 +3,7 @@
 namespace makbari\fanapOauthClient\handlers;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use makbari\fanapOauthClient\exceptions\UnAuthorizedException;
 use makbari\fanapOauthClient\interfaces\handler\iHandler;
 use Psr\Http\Message\ResponseInterface;
@@ -39,10 +40,24 @@ class GuzzleHandler implements iHandler
     /**
      * @param string $token
      * @return mixed
+     * @throws UnAuthorizedException
      */
     function getUserByToken(string $token)
     {
-        // TODO: Implement getUserByToken() method.
+        try {
+            $response = $this->httpClient->get($this->endpoint(__FUNCTION__), [
+                'query' => [
+                    '_token_' => $token,
+                    '_token_issuer_' => 1
+                ]
+            ]);
+        } catch (ClientException $e) {
+            if ($e->getResponse()->getStatusCode() == 400){
+                throw new UnAuthorizedException();
+            }
+        }
+
+        return $this->getResult($response);
     }
 
     /**
@@ -67,11 +82,7 @@ class GuzzleHandler implements iHandler
     {
         try {
             $response = $this->httpClient->post($this->endpoint(__FUNCTION__), [
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'Content-Type' => 'application/x-www-form-urlencoded'
-                ],
-                'json' => [
+                'form_params' => [
                         'code' => $code,
                         'client_id' => $clientId,
                         'client_secret' => $clientSecret,
@@ -79,8 +90,10 @@ class GuzzleHandler implements iHandler
                         'redirect_uri' => $redirectUri
                 ]
             ]);
-        } catch (\Exception $e) {
-            throw new UnAuthorizedException();
+        } catch (ClientException $e) {
+            if ($e->getResponse()->getStatusCode() == 400){
+                throw new UnAuthorizedException();
+            }
         }
 
         return $this->getResult($response);
@@ -107,7 +120,10 @@ class GuzzleHandler implements iHandler
         switch ($method) {
 
             case 'getTokenByCode':
-                return $this->serverUrl . 'oauth2/token/';
+                return $this->serverUrl . '/oauth2/token/';
+                break;
+            case 'getUserByToken':
+                return $this->serverUrl . ':8081/nzh/getUserProfile/';
                 break;
         }
     }

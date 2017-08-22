@@ -2,6 +2,7 @@
 namespace makbari\fanapOauthClient\entity;
 
 use makbari\fanapOauthClient\interfaces\entity\iToken;
+use makbari\fanapOauthClient\interfaces\entity\iUser;
 
 /**
  * Class Token
@@ -44,6 +45,11 @@ class Token implements iToken
      * @var string
      */
     private $token_type;
+
+    /**
+     * @var iUser
+     */
+    private $user;
 
     /**
      * Token constructor.
@@ -111,7 +117,7 @@ class Token implements iToken
     /**
      * @return int|string
      */
-    public function getExpiresIn() :string
+    public function getExpiresIn() :int
     {
         return $this->expires_in;
     }
@@ -120,7 +126,7 @@ class Token implements iToken
      * @param $expires_in
      * @return $this
      */
-    public function setExpiresIn(string $expires_in)
+    public function setExpiresIn(int $expires_in)
     {
         $this->expires_in = $expires_in;
 
@@ -178,7 +184,7 @@ class Token implements iToken
      */
     public function getScope() : string
     {
-        return $this->getScope();
+        return $this->scope;
     }
 
     /**
@@ -195,7 +201,7 @@ class Token implements iToken
     /**
      * @return array
      */
-    public function getScopes() : array
+    public function getScopes()
     {
         return explode($this->getScope(), ' ');
     }
@@ -220,12 +226,54 @@ class Token implements iToken
         return $this;
     }
 
+
+    /**
+     * @return iUser
+     */
+    public function getUser(): iUser
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param iUser $user
+     */
+    public function setUser(iUser $user)
+    {
+        $this->user = $user;
+    }
+
+
     /**
      * @return string
      */
-    function __toString() :string
+    public function __toString() :string
     {
         return $this->token_type.' '. $this->access_token;
     }
 
+    /**
+     * @return array
+     */
+    public function toArray() :array
+    {
+        return [
+            'access_token'  => $this->getAccessToken(),
+            'expires_in'    => $this->getExpiresIn(),
+            'expires_at'    => $this->getExpiresAt(),
+            'id_token'      => $this->getIdToken(),
+            'refresh_token' => $this->getRefreshToken(),
+            'scope'         => $this->getScope(),
+            'token_type'    => $this->getTokenType(),
+            'user'          => $this->getUser()
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function preview() :array
+    {
+        return $this->toArray();
+    }
 }

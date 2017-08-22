@@ -39,9 +39,15 @@ interface iToken
 
 
     /**
-     * @return mixed
+     * @return string
      */
     function getTokenType();
+
+
+    /**
+     * @return iUser
+     */
+    function getUser();
 
     /**
      * @return mixed

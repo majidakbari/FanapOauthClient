@@ -2,6 +2,8 @@
 namespace makbari\fanapOauthClient;
 
 use makbari\fanapOauthClient\entity\Token;
+use makbari\fanapOauthClient\entity\User;
+use makbari\fanapOauthClient\interfaces\entity\iToken;
 use makbari\fanapOauthClient\interfaces\handler\iHandler;
 use makbari\fanapOauthClient\interfaces\iOAuthClient;
 
@@ -32,14 +34,16 @@ class Client implements iOAuthClient
      */
     public function getUserByToken(string $token)
     {
-        // TODO: Implement getUserByToken() method.
+        $result = $this->handler->getUserByToken($token);
+
+        return User::fromArray($result['result']);
     }
 
     /**
      * @param string $refreshToken
-     * @return mixed
+     * @return iToken
      */
-    public function getTokenByRefreshToken(string $refreshToken): array
+    public function getTokenByRefreshToken(string $refreshToken): iToken
     {
         // TODO: Implement getTokenByRefreshToken() method.
     }
@@ -50,9 +54,9 @@ class Client implements iOAuthClient
      * @param string $clientSecret
      * @param string $grantType
      * @param string $redirectUri
-     * @return Token
+     * @return iToken
      */
-    public function getTokenByCode(string $code, string $clientId, string $clientSecret, string $grantType, string $redirectUri): Token
+    public function getTokenByCode(string $code, string $clientId, string $clientSecret, string $grantType, string $redirectUri): iToken
     {
        $result = $this->handler->getTokenByCode($code, $clientId, $clientSecret, $grantType, $redirectUri);
 
