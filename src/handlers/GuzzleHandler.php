@@ -61,12 +61,33 @@ class GuzzleHandler implements iHandler
     }
 
     /**
+     * @param string $clientId
+     * @param $clientSecret
+     * @param $grantType
      * @param string $refreshToken
-     * @return mixed
+     * @param $redirectUri
+     * @return array
+     * @throws UnAuthorizedException
      */
-    function getTokenByRefreshToken(string $refreshToken): array
+    function getTokenByRefreshToken(string $clientId, string $clientSecret, string $grantType, string $refreshToken, string $redirectUri): array
     {
-        // TODO: Implement getTokenByRefreshToken() method.
+        try {
+            $response = $this->httpClient->post($this->endpoint(__FUNCTION__), [
+                'form_params' => [
+                    'client_id' => $clientId,
+                    'client_secret' => $clientSecret,
+                    'grant_type' => $grantType,
+                    'refresh_token' => $refreshToken,
+                    'redirect_uri' => $redirectUri
+                ]
+            ]);
+        } catch (ClientException $e) {
+            if ($e->getResponse()->getStatusCode() == 400){
+                throw new UnAuthorizedException();
+            }
+        }
+
+        return $this->getResult($response);
     }
 
     /**
@@ -124,6 +145,9 @@ class GuzzleHandler implements iHandler
                 break;
             case 'getUserByToken':
                 return $this->serverUrl . ':8081/nzh/getUserProfile/';
+                break;
+            case 'getTokenByRefreshToken':
+                return $this->serverUrl . '/oauth2/token/';
                 break;
         }
     }

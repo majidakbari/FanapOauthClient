@@ -40,12 +40,18 @@ class Client implements iOAuthClient
     }
 
     /**
+     * @param string $clientId
+     * @param string $clientSecret
+     * @param string $grantType
      * @param string $refreshToken
+     * @param string $redirectUri
      * @return iToken
      */
-    public function getTokenByRefreshToken(string $refreshToken): iToken
+    public function getTokenByRefreshToken(string $clientId, string $clientSecret, string $grantType, string $refreshToken, string $redirectUri): iToken
     {
-        // TODO: Implement getTokenByRefreshToken() method.
+        $result = $this->handler->getTokenByRefreshToken( $clientId,  $clientSecret,  $grantType,  $refreshToken,  $redirectUri);
+
+        return Token::fromArray($result);
     }
 
     /**

@@ -12,6 +12,11 @@ class Token implements iToken
 {
 
     /**
+     * @var mixed
+     */
+    private $id;
+
+    /**
      * @var string
      */
     private $access_token;
@@ -243,6 +248,22 @@ class Token implements iToken
         $this->user = $user;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
 
     /**
      * @return string
@@ -276,4 +297,6 @@ class Token implements iToken
     {
         return $this->toArray();
     }
+
+
 }

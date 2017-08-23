@@ -23,4 +23,10 @@ interface iTokenRepository
      */
     function updateToken(iToken $token) :iToken;
 
+    /**
+     * @param iToken $token
+     * @return iToken
+     */
+    function writeOrUpdate(iToken $token) :iToken ;
+
 }
