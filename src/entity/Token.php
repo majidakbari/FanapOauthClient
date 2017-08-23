@@ -1,9 +1,9 @@
 <?php
 namespace makbari\fanapOauthClient\entity;
 
-use makbari\fanapOauthClient\entity\traits\ObjectBuilder;
 use makbari\fanapOauthClient\interfaces\entity\iToken;
 use makbari\fanapOauthClient\interfaces\entity\iUser;
+use mhndev\phpStd\ObjectBuilder;
 
 
 /**
