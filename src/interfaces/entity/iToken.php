@@ -10,13 +10,12 @@ interface iToken
     /**
      * @returnYT mixed
      */
-    function getId();
+    function getIdentifier();
 
     /**
      * @param $id
-     * @return mixed
      */
-    function setId($id);
+    function setIdentifier($id);
 
     /**
      * @return string

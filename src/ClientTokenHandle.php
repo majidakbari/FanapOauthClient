@@ -71,9 +71,9 @@ class ClientTokenHandle extends Client implements iOAuthClient
         $newToken = $this->getTokenByRefreshToken($clientId, $clientSecret, $grantType, $refreshToken->getRefreshToken(), $redirectUri);
         $user = $this->getUserByToken($newToken->getAccessToken());
         $newToken->setUser($user);
-        $newToken->setId($refreshToken->getId());
+        $newToken->setIdentifier($refreshToken->getIdentifier());
 
-        return $this->tokenRepository->updateToken($newToken);
+        return $this->tokenRepository->update($newToken);
     }
 
     /**

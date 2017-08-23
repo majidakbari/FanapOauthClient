@@ -61,4 +61,9 @@ interface iUser
     function getChatReceiveEnable();
 
 
+    /**
+     * @return array
+     */
+     function preview();
+
 }

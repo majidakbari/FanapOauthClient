@@ -3,6 +3,7 @@ namespace makbari\fanapOauthClient\entity;
 
 use makbari\fanapOauthClient\interfaces\entity\iToken;
 use makbari\fanapOauthClient\interfaces\entity\iUser;
+use mhndev\phpStd\ObjectBuilder;
 
 /**
  * Class Token
@@ -11,69 +12,75 @@ use makbari\fanapOauthClient\interfaces\entity\iUser;
 class Token implements iToken
 {
 
+    use ObjectBuilder;
     /**
      * @var mixed
      */
-    private $id;
+    protected $identifier = null;
 
     /**
      * @var string
      */
-    private $access_token;
+    protected $access_token;
 
     /**
      * @var string
      */
-    private $expires_in;
+    protected $expires_in;
 
     /**
      * @var string
      */
-    private $expires_at;
+    protected $expires_at;
 
     /**
      * @var string
      */
-    private $id_token;
+    protected $id_token;
 
     /**
      * @var string
      */
-    private $refresh_token;
+    protected $refresh_token;
 
     /**
      * @var string
      */
-    private $scope;
+    protected $scope;
 
     /**
      * @var string
      */
-    private $token_type;
+    protected $token_type;
 
     /**
      * @var iUser
      */
-    private $user;
+    protected $user;
 
     /**
      * Token constructor.
+     * @param $identifier
      * @param string $access_token
      * @param string $expires_in
      * @param string $id_token
      * @param string $refresh_token
      * @param string $scope
      * @param string $token_type
+     * @param $user
      */
     public function __construct(
+        $identifier,
         $access_token,
         $expires_in,
         $id_token,
         $refresh_token,
         $scope,
-        $token_type
+        $token_type,
+        $user
     )
     {
+        $this->identifier    = $identifier;
         $this->access_token  = $access_token;
         $this->expires_in    = $expires_in;
         $this->id_token      = $id_token;
@@ -81,6 +88,7 @@ class Token implements iToken
         $this->scope         = $scope;
         $this->token_type    = $token_type;
         $this->expires_at    = (int)$this->expires_in + time();
+        $this->user          = $user;
     }
 
 
@@ -90,13 +98,18 @@ class Token implements iToken
      */
     public static function fromArray(array $token)
     {
+        $user = !empty($token['user']) ? $token['user'] : null;
+        $id = !empty($token['identifier']) ? $token['identifier'] : null;
+
         return new static(
+            $id,
             $token['access_token'],
             $token['expires_in'],
             $token['id_token'],
             $token['refresh_token'],
             $token['scope'],
-            $token['token_type']
+            $token['token_type'],
+            $user
         );
     }
 
@@ -235,7 +248,7 @@ class Token implements iToken
     /**
      * @return iUser
      */
-    public function getUser(): iUser
+    public function getUser()
     {
         return $this->user;
     }
@@ -248,22 +261,22 @@ class Token implements iToken
         $this->user = $user;
     }
 
+
     /**
-     * @return mixed
+     * @returnYT mixed
      */
-    public function getId()
+    function getIdentifier()
     {
-        return $this->id;
+        return $this->identifier;
     }
 
     /**
-     * @param mixed $id
+     * @param $id
      */
-    public function setId($id)
+    function setIdentifier($id)
     {
-        $this->id = $id;
+        $this->identifier = $id;
     }
-
 
     /**
      * @return string
@@ -279,6 +292,7 @@ class Token implements iToken
     public function toArray() :array
     {
         return [
+            'identifier'    => $this->getIdentifier(),
             'access_token'  => $this->getAccessToken(),
             'expires_in'    => $this->getExpiresIn(),
             'expires_at'    => $this->getExpiresAt(),
@@ -286,7 +300,7 @@ class Token implements iToken
             'refresh_token' => $this->getRefreshToken(),
             'scope'         => $this->getScope(),
             'token_type'    => $this->getTokenType(),
-            'user'          => $this->getUser()
+            'user'          => $this->getUser()->preview()
         ];
     }
 
@@ -297,6 +311,5 @@ class Token implements iToken
     {
         return $this->toArray();
     }
-
 
 }

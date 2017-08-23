@@ -29,9 +29,9 @@ class User implements iUser
         $this->nickName = $nickName;
         $this->birthDate = $birthDate;
         $this->score = $score;
-        $this->followingsCount = $followingsCount;
+        $this->followingCount = $followingsCount;
         $this->joinDate = $joinDate;
-        $this->cellPhoneNumber = $cellPhoneNumber;
+        $this->cellphoneNumber = $cellPhoneNumber;
         $this->userId = $userId;
         $this->guest = $guest;
         $this->chatSendEnable = $chatSendEnable;
@@ -42,57 +42,57 @@ class User implements iUser
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $nickName;
+    protected $nickName;
 
     /**
      * @var int
      */
-    private $birthDate;
+    protected $birthDate;
 
     /**
      * @var int
      */
-    private $score;
+    protected $score;
 
     /**
      * @var int
      */
-    private $followingsCount;
+    protected $followingCount;
 
     /**
      * @var int
      */
-    private $joinDate;
+    protected $joinDate;
 
     /**
      * @var string
      */
-    private $cellPhoneNumber;
+    protected $cellphoneNumber;
 
     /**
      * @var int
      */
-    private $userId;
+    protected $userId;
 
     /**
      * @var bool
      */
-    private $guest;
+    protected $guest;
 
     /**
      * @var bool
      */
-    private $chatSendEnable;
+    protected $chatSendEnable;
 
     /**
      * @var bool
      */
-    private $chatReceiveEnable;
+    protected $chatReceiveEnable;
 
 
     /**
@@ -176,7 +176,7 @@ class User implements iUser
      */
     public function getFollowingsCount(): int
     {
-        return $this->followingsCount;
+        return $this->followingCount;
     }
 
     /**
@@ -185,7 +185,7 @@ class User implements iUser
      */
     public function setFollowingsCount(int $followingsCount)
     {
-        $this->followingsCount = $followingsCount;
+        $this->followingCount = $followingsCount;
 
         return $this;
     }
@@ -214,7 +214,7 @@ class User implements iUser
      */
     public function getCellPhoneNumber(): string
     {
-        return $this->cellPhoneNumber;
+        return $this->cellphoneNumber;
     }
 
     /**
@@ -223,7 +223,7 @@ class User implements iUser
      */
     public function setCellPhoneNumber($cellPhoneNumber)
     {
-        $this->cellPhoneNumber = $cellPhoneNumber;
+        $this->cellphoneNumber = $cellPhoneNumber;
 
         return $this;
     }
@@ -327,7 +327,7 @@ class User implements iUser
             'nickName' => $this->getNickName(),
             'birthDate' => $this->getBirthDate(),
             'score' => $this->getScore(),
-            'followingsCount' => $this->getFollowingsCount(),
+            'followingCount' => $this->getFollowingsCount(),
             'joinDate' => $this->getJoinDate(),
             'cellphoneNumber' => $this->getCellPhoneNumber(),
             'userId' => $this->getUserId(),

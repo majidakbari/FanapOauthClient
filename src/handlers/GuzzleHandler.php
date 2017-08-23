@@ -4,6 +4,8 @@ namespace makbari\fanapOauthClient\handlers;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
+use makbari\fanapOauthClient\exceptions\CanNotConnectToOauthServerException;
 use makbari\fanapOauthClient\exceptions\UnAuthorizedException;
 use makbari\fanapOauthClient\interfaces\handler\iHandler;
 use Psr\Http\Message\ResponseInterface;
@@ -40,6 +42,7 @@ class GuzzleHandler implements iHandler
     /**
      * @param string $token
      * @return mixed
+     * @throws CanNotConnectToOauthServerException
      * @throws UnAuthorizedException
      */
     function getUserByToken(string $token)
@@ -56,17 +59,21 @@ class GuzzleHandler implements iHandler
                 throw new UnAuthorizedException();
             }
         }
+        catch (ConnectException $e){
+            throw new CanNotConnectToOauthServerException();
+        }
 
         return $this->getResult($response);
     }
 
     /**
      * @param string $clientId
-     * @param $clientSecret
-     * @param $grantType
+     * @param string $clientSecret
+     * @param string $grantType
      * @param string $refreshToken
-     * @param $redirectUri
+     * @param string $redirectUri
      * @return array
+     * @throws CanNotConnectToOauthServerException
      * @throws UnAuthorizedException
      */
     function getTokenByRefreshToken(string $clientId, string $clientSecret, string $grantType, string $refreshToken, string $redirectUri): array
@@ -86,6 +93,9 @@ class GuzzleHandler implements iHandler
                 throw new UnAuthorizedException();
             }
         }
+        catch (ConnectException $e){
+            throw new CanNotConnectToOauthServerException();
+        }
 
         return $this->getResult($response);
     }
@@ -96,8 +106,9 @@ class GuzzleHandler implements iHandler
      * @param string $clientSecret
      * @param string $grantType
      * @param string $redirectUri
-     * @throws UnAuthorizedException
      * @return array
+     * @throws CanNotConnectToOauthServerException
+     * @throws UnAuthorizedException
      */
     public function getTokenByCode(string $code, string $clientId, string $clientSecret, string $grantType, string $redirectUri): array
     {
@@ -115,6 +126,9 @@ class GuzzleHandler implements iHandler
             if ($e->getResponse()->getStatusCode() == 400){
                 throw new UnAuthorizedException();
             }
+        }
+        catch (ConnectException $e){
+            throw new CanNotConnectToOauthServerException();
         }
 
         return $this->getResult($response);
