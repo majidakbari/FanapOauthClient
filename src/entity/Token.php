@@ -109,7 +109,7 @@ class Token implements iToken
             $token['id_token'],
             $token['refresh_token'],
             $token['scope'],
-            $token['token_type'],
+            ucfirst($token['token_type']),
             $user
         );
     }
