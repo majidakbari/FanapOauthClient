@@ -8,6 +8,16 @@ namespace makbari\fanapOauthClient\interfaces\entity;
 interface iToken
 {
     /**
+     * @returnYT mixed
+     */
+    function getIdentifier();
+
+    /**
+     * @param $id
+     */
+    function setIdentifier($id);
+
+    /**
      * @return string
      */
     function getAccessToken();
@@ -39,9 +49,18 @@ interface iToken
 
 
     /**
-     * @return mixed
+     * @return string
      */
     function getTokenType();
+
+
+    /**
+     * @return iUser
+     */
+    function getUser();
+
+
+    function setUser(iUser $user);
 
     /**
      * @return mixed

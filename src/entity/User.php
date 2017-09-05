@@ -7,66 +7,98 @@ use makbari\fanapOauthClient\interfaces\entity\iUser;
 
 class User implements iUser
 {
+
     /**
-     * @var string
+     * User constructor.
+     * @param $name
+     * @param $nickName
+     * @param $birthDate
+     * @param $score
+     * @param $followingsCount
+     * @param $joinDate
+     * @param $cellPhoneNumber
+     * @param $userId
+     * @param $guest
+     * @param $chatSendEnable
+     * @param $chatReceiveEnable
      */
-    private $name;
+    public function __construct($name, $nickName, $birthDate, $score, $followingsCount,
+                                $joinDate, $cellPhoneNumber, $userId, $guest, $chatSendEnable, $chatReceiveEnable)
+    {
+        $this->name = $name;
+        $this->nickName = $nickName;
+        $this->birthDate = $birthDate;
+        $this->score = $score;
+        $this->followingCount = $followingsCount;
+        $this->joinDate = $joinDate;
+        $this->cellphoneNumber = $cellPhoneNumber;
+        $this->userId = $userId;
+        $this->guest = $guest;
+        $this->chatSendEnable = $chatSendEnable;
+        $this->chatReceiveEnable = $chatReceiveEnable;
+    }
+
 
     /**
      * @var string
      */
-    private $nickName;
-
-    /**
-     * @var int
-     */
-    private $birthDate;
-
-    /**
-     * @var int
-     */
-    private $score;
-
-    /**
-     * @var int
-     */
-    private $followingsCount;
-
-    /**
-     * @var int
-     */
-    private $joinDate;
+    protected $name;
 
     /**
      * @var string
      */
-    private $cellPhoneNumber;
+    protected $nickName;
 
     /**
      * @var int
      */
-    private $userId;
+    protected $birthDate;
+
+    /**
+     * @var int
+     */
+    protected $score;
+
+    /**
+     * @var int
+     */
+    protected $followingCount;
+
+    /**
+     * @var int
+     */
+    protected $joinDate;
+
+    /**
+     * @var string
+     */
+    protected $cellphoneNumber;
+
+    /**
+     * @var int
+     */
+    protected $userId;
 
     /**
      * @var bool
      */
-    private $guest;
+    protected $guest;
 
     /**
      * @var bool
      */
-    private $chatSendEnable;
+    protected $chatSendEnable;
 
     /**
      * @var bool
      */
-    private $chatReceiveEnable;
+    protected $chatReceiveEnable;
 
 
     /**
      * @return string
      */
-    public function getName() :string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -85,7 +117,7 @@ class User implements iUser
     /**
      * @return string
      */
-    public function getNickName() :string
+    public function getNickName(): string
     {
         return $this->nickName;
     }
@@ -104,7 +136,7 @@ class User implements iUser
     /**
      * @return int
      */
-    public function getBirthDate() :int
+    public function getBirthDate(): int
     {
         return $this->birthDate;
     }
@@ -123,7 +155,7 @@ class User implements iUser
     /**
      * @return int
      */
-    public function getScore() :int
+    public function getScore(): int
     {
         return $this->score;
     }
@@ -142,9 +174,9 @@ class User implements iUser
     /**
      * @return int
      */
-    public function getFollowingsCount() :int
+    public function getFollowingsCount(): int
     {
-        return $this->followingsCount;
+        return $this->followingCount;
     }
 
     /**
@@ -153,7 +185,7 @@ class User implements iUser
      */
     public function setFollowingsCount(int $followingsCount)
     {
-        $this->followingsCount = $followingsCount;
+        $this->followingCount = $followingsCount;
 
         return $this;
     }
@@ -161,7 +193,7 @@ class User implements iUser
     /**
      * @return int
      */
-    public function getJoinDate() :int
+    public function getJoinDate(): int
     {
         return $this->joinDate;
     }
@@ -180,9 +212,9 @@ class User implements iUser
     /**
      * @return string
      */
-    public function getCellPhoneNumber() :string
+    public function getCellPhoneNumber(): string
     {
-        return $this->cellPhoneNumber;
+        return $this->cellphoneNumber;
     }
 
     /**
@@ -191,7 +223,7 @@ class User implements iUser
      */
     public function setCellPhoneNumber($cellPhoneNumber)
     {
-        $this->cellPhoneNumber = $cellPhoneNumber;
+        $this->cellphoneNumber = $cellPhoneNumber;
 
         return $this;
     }
@@ -199,9 +231,9 @@ class User implements iUser
     /**
      * @return int
      */
-    public function getUserId() :int
+    public function getUserId(): int
     {
-        return $this->getUserId();
+        return $this->userId;
     }
 
     /**
@@ -218,7 +250,7 @@ class User implements iUser
     /**
      * @return bool
      */
-    public function getGuest() :bool
+    public function getGuest(): bool
     {
         return $this->guest;
     }
@@ -238,7 +270,7 @@ class User implements iUser
     /**
      * @return bool
      */
-    public function getChatSendEnable() :bool
+    public function getChatSendEnable(): bool
     {
         return $this->chatReceiveEnable;
     }
@@ -257,9 +289,9 @@ class User implements iUser
     /**
      * @return bool
      */
-    public function getChatReceiveEnable() :bool
+    public function getChatReceiveEnable(): bool
     {
-       return $this->chatReceiveEnable;
+        return $this->chatReceiveEnable;
     }
 
     /**
@@ -271,6 +303,38 @@ class User implements iUser
         $this->chatReceiveEnable = $chatReceiveEnable;
 
         return $this;
+    }
+
+    /**
+     * @param array $data
+     * @return static
+     */
+    public static function fromArray(array $data)
+    {
+
+        return new static ($data['name'], $data['nickName'], $data['birthDate'], $data['score'],
+                           $data['followingCount'], $data['joinDate'], $data['cellphoneNumber'],
+                           $data['userId'], $data['guest'], $data['chatSendEnable'], $data['chatReceiveEnable']);
+    }
+
+    /**
+     * @return array
+     */
+    public function preview()
+    {
+        return [
+            'name' => $this->getName(),
+            'nickName' => $this->getNickName(),
+            'birthDate' => $this->getBirthDate(),
+            'score' => $this->getScore(),
+            'followingCount' => $this->getFollowingsCount(),
+            'joinDate' => $this->getJoinDate(),
+            'cellphoneNumber' => $this->getCellPhoneNumber(),
+            'userId' => $this->getUserId(),
+            'guest' => $this->getGuest(),
+            'chatSendEnable' => $this->getChatSendEnable(),
+            'chatReceiveEnable' => $this->getChatReceiveEnable(),
+        ];
     }
 
 

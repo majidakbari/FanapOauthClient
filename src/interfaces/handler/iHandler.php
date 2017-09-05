@@ -17,10 +17,14 @@ interface iHandler
     function getUserByToken(string $token);
 
     /**
+     * @param string $clientId
+     * @param string $clientSecret
+     * @param string $grantType
      * @param string $refreshToken
-     * @return mixed
+     * @param string $redirectUri
+     * @return array
      */
-    function getTokenByRefreshToken(string $refreshToken) :array;
+    function getTokenByRefreshToken(string $clientId, string $clientSecret, string $grantType, string $refreshToken, string $redirectUri) :array;
 
     /**
      * @param string $code

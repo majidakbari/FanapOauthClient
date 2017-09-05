@@ -2,6 +2,9 @@
 namespace makbari\fanapOauthClient\entity;
 
 use makbari\fanapOauthClient\interfaces\entity\iToken;
+use makbari\fanapOauthClient\interfaces\entity\iUser;
+use mhndev\phpStd\ObjectBuilder;
+
 
 /**
  * Class Token
@@ -10,59 +13,75 @@ use makbari\fanapOauthClient\interfaces\entity\iToken;
 class Token implements iToken
 {
 
+    use ObjectBuilder;
     /**
-     * @var string
+     * @var mixed
      */
-    private $access_token;
+    protected $identifier = null;
 
     /**
      * @var string
      */
-    private $expires_in;
+    protected $access_token;
 
     /**
      * @var string
      */
-    private $expires_at;
+    protected $expires_in;
 
     /**
      * @var string
      */
-    private $id_token;
+    protected $expires_at;
 
     /**
      * @var string
      */
-    private $refresh_token;
+    protected $id_token;
 
     /**
      * @var string
      */
-    private $scope;
+    protected $refresh_token;
 
     /**
      * @var string
      */
-    private $token_type;
+    protected $scope;
+
+    /**
+     * @var string
+     */
+    protected $token_type;
+
+    /**
+     * @var iUser
+     */
+    protected $user;
 
     /**
      * Token constructor.
+     * @param $identifier
      * @param string $access_token
      * @param string $expires_in
      * @param string $id_token
      * @param string $refresh_token
      * @param string $scope
      * @param string $token_type
+     * @param $user
      */
     public function __construct(
+        $identifier,
         $access_token,
         $expires_in,
         $id_token,
         $refresh_token,
         $scope,
-        $token_type
+        $token_type,
+        $user
     )
     {
+        $this->identifier    = $identifier;
         $this->access_token  = $access_token;
         $this->expires_in    = $expires_in;
         $this->id_token      = $id_token;
@@ -70,6 +89,7 @@ class Token implements iToken
         $this->scope         = $scope;
         $this->token_type    = $token_type;
         $this->expires_at    = (int)$this->expires_in + time();
+        $this->user          = $user;
     }
 
 
@@ -79,13 +99,18 @@ class Token implements iToken
      */
     public static function fromArray(array $token)
     {
+        $user = !empty($token['user']) ? $token['user'] : null;
+        $id = !empty($token['identifier']) ? $token['identifier'] : null;
+
         return new static(
+            $id,
             $token['access_token'],
             $token['expires_in'],
             $token['id_token'],
             $token['refresh_token'],
             $token['scope'],
-            $token['token_type']
+            ucfirst($token['token_type']),
+            $user
         );
     }
 
@@ -111,7 +136,7 @@ class Token implements iToken
     /**
      * @return int|string
      */
-    public function getExpiresIn() :string
+    public function getExpiresIn() :int
     {
         return $this->expires_in;
     }
@@ -120,7 +145,7 @@ class Token implements iToken
      * @param $expires_in
      * @return $this
      */
-    public function setExpiresIn(string $expires_in)
+    public function setExpiresIn(int $expires_in)
     {
         $this->expires_in = $expires_in;
 
@@ -178,7 +203,7 @@ class Token implements iToken
      */
     public function getScope() : string
     {
-        return $this->getScope();
+        return $this->scope;
     }
 
     /**
@@ -195,7 +220,7 @@ class Token implements iToken
     /**
      * @return array
      */
-    public function getScopes() : array
+    public function getScopes()
     {
         return explode($this->getScope(), ' ');
     }
@@ -220,12 +245,72 @@ class Token implements iToken
         return $this;
     }
 
+
+    /**
+     * @return iUser
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param iUser $user
+     */
+    public function setUser(iUser $user)
+    {
+        $this->user = $user;
+    }
+
+
+    /**
+     * @returnYT mixed
+     */
+    function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * @param $id
+     */
+    function setIdentifier($id)
+    {
+        $this->identifier = $id;
+    }
+
     /**
      * @return string
      */
-    function __toString() :string
+    public function __toString() :string
     {
         return $this->token_type.' '. $this->access_token;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray() :array
+    {
+        return [
+            'identifier'    => $this->getIdentifier(),
+            'access_token'  => $this->getAccessToken(),
+            'expires_in'    => $this->getExpiresIn(),
+            'expires_at'    => $this->getExpiresAt(),
+            'id_token'      => $this->getIdToken(),
+            'refresh_token' => $this->getRefreshToken(),
+            'scope'         => $this->getScope(),
+            'token_type'    => $this->getTokenType(),
+            'user'          => $this->getUser()->preview()
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function preview() :array
+    {
+        return $this->toArray();
     }
 
 }
